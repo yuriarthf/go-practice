@@ -1,9 +1,14 @@
 package db
 
-import "database/sql"
+import (
+	"database/sql"
+	"errors"
+	"fmt"
+	"strings"
+)
 
 type Item struct {
-	ID          int            `json:"id"`
+	ID          int64          `json:"id"`
 	Name        string         `json:"name"`
 	Description sql.NullString `json:"description"`
 	Price       float32        `json:"price"`
@@ -16,6 +21,14 @@ func (c *Item) Fields() []interface{} {
 		&c.Description,
 		&c.Price,
 	}
+}
+
+func explode(a []uint64) []interface{} {
+	var r []interface{}
+	for i := range a {
+		r = append(r, i)
+	}
+	return r
 }
 
 func GetAllItems() ([]Item, error) {
@@ -51,14 +64,20 @@ func GetItemByName(name string) (Customer, error) {
 func AddItem(name string, description string, price float32) (int64, error) {
 	var r sql.Result
 	var err error
+
+	_, err = GetItemByName(name)
+	if err == nil {
+		return -1, errors.New(fmt.Sprintf(`Item with name "%s" already exist`, name))
+	}
+
 	if len(description) == 0 {
 		r, err = db.Exec(
-			`INSERT INTO Customers ("NAME", "PRICE") VALUES (?, ?)`,
+			`INSERT INTO Customers (NAME, PRICE) VALUES (?, ?)`,
 			name, price,
 		)
 	} else {
 		r, err = db.Exec(
-			`INSERT INTO Customers ("NAME", "DESCRIPTION", "PRICE") VALUES (?, ?, ?)`,
+			`INSERT INTO Customers (NAME, DESCRIPTION, PRICE) VALUES (?, ?, ?)`,
 			name, description, price,
 		)
 	}
@@ -68,4 +87,23 @@ func AddItem(name string, description string, price float32) (int64, error) {
 	}
 
 	return r.LastInsertId()
+}
+
+func itemsExist(ids []uint64) (bool, error) {
+	if len(ids) == 0 {
+		return false, errors.New("No Item ID provided")
+	}
+	t := "(?" + strings.Repeat(",?", len(ids)-1) + ")"
+
+	var count int
+	db.QueryRow(
+		fmt.Sprintf("SELECT COUNT(*) FROM Items WHERE ID IN %s", t),
+		explode(ids)...,
+	).Scan(&count)
+
+	if count == len(ids) {
+		return true, nil
+	}
+
+	return false, nil
 }

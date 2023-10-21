@@ -38,6 +38,8 @@ func main() {
 
 	/// POST METHODS
 	r.POST("/newCustomer", controllers.NewCustomer)
+	r.POST("/addItem", controllers.AddItem)
+	r.POST("/newSale", controllers.NewSale)
 
 	log.Fatal(r.Run())
 }

@@ -3,7 +3,7 @@ package db
 import "database/sql"
 
 type Customer struct {
-	ID          int            `json:"id"`
+	ID          int64          `json:"id"`
 	Name        string         `json:"name"`
 	Age         uint8          `json:"age"`
 	Address     sql.NullString `json:"address"`
@@ -59,12 +59,12 @@ func NewCustomer(name string, age uint8, address string) (int64, error) {
 	var err error
 	if len(address) == 0 {
 		r, err = db.Exec(
-			`INSERT INTO Customers ("NAME", "AGE") VALUES (?, ?)`,
+			`INSERT INTO Customers (NAME, AGE) VALUES (?, ?)`,
 			name, age,
 		)
 	} else {
 		r, err = db.Exec(
-			`INSERT INTO Customers ("NAME", "AGE", "ADDRESS") VALUES (?, ?, ?)`,
+			`INSERT INTO Customers (NAME, AGE, ADDRESS) VALUES (?, ?, ?)`,
 			name, age, address,
 		)
 	}
