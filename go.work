@@ -1,0 +1,9 @@
+go 1.21.3
+
+use (
+	./equivalent-binary-trees
+	./gowiki
+	./mysql-crud
+	./web-crawler
+	./web-service-gin
+)

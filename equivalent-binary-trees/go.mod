@@ -1,4 +1,4 @@
-module exercise/equivalent_binary_trees
+module exercise/equivalent-binary-trees
 
 go 1.21.3
 
