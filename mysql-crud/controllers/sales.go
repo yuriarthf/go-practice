@@ -9,7 +9,7 @@ import (
 
 type NewSalesInput struct {
 	Sale       []db.SaleItem `json:"sales"`
-	CustomerID uint64        `json:"customerId"`
+	CustomerID int64         `json:"customerId"`
 }
 
 func NewSale(c *gin.Context) {

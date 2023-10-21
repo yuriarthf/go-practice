@@ -23,7 +23,7 @@ func (c *Item) Fields() []interface{} {
 	}
 }
 
-func explode(a []uint64) []interface{} {
+func explode(a []int64) []interface{} {
 	var r []interface{}
 	for i := range a {
 		r = append(r, i)
@@ -89,7 +89,7 @@ func AddItem(name string, description string, price float32) (int64, error) {
 	return r.LastInsertId()
 }
 
-func itemsExist(ids []uint64) (bool, error) {
+func itemsExist(ids []int64) (bool, error) {
 	if len(ids) == 0 {
 		return false, errors.New("No Item ID provided")
 	}

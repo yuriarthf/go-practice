@@ -43,7 +43,7 @@ func GetAllCustomers() ([]Customer, error) {
 	return result, nil
 }
 
-func GetCustomerById(id uint64) (Customer, error) {
+func GetCustomerById(id int64) (Customer, error) {
 	r := db.QueryRow("SELECT * FROM Customers WHERE ID = ?", id)
 
 	var result Customer

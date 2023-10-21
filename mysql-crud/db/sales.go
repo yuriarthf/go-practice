@@ -7,14 +7,14 @@ import (
 )
 
 type Sale struct {
-	ID         uint64 `json:"id"`
-	CustomerID uint64 `json:"customerId"`
-	ItemID     uint64 `json:"itemId"`
-	Quantity   uint64 `json:"quantity"`
+	ID         int64 `json:"id"`
+	CustomerID int64 `json:"customerId"`
+	ItemID     int64 `json:"itemId"`
+	Quantity   int64 `json:"quantity"`
 }
 
 type SaleItem struct {
-	ItemID   uint64 `json:"itemId"`
+	ItemID   int64  `json:"itemId"`
 	Quantity uint64 `json:"quantity"`
 }
 
@@ -27,7 +27,7 @@ func (c *Sale) Fields() []interface{} {
 	}
 }
 
-func RegisterSale(custid uint64, sale []SaleItem) error {
+func RegisterSale(custid int64, sale []SaleItem) error {
 	if len(sale) == 0 {
 		return errors.New("No item sold")
 	}
@@ -36,7 +36,7 @@ func RegisterSale(custid uint64, sale []SaleItem) error {
 		return errors.New("Customer not found")
 	}
 
-	var ids []uint64
+	var ids []int64
 	var args []interface{}
 	for _, s := range sale {
 		ids = append(ids, s.ItemID)
