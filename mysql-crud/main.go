@@ -31,12 +31,10 @@ func main() {
 	// Define endpoints
 	/// GET Methods
 	r.GET("/customers", controllers.GetCustomers)
-	r.GET("/customers/:id", controllers.GetCustomerById)
-	/*
-		g.GET("/items", getItems)
-		g.GET("/items/:name", getItemByName)
-		g.GET("/sales", getSales)
-	*/
+	r.GET("/customers/id/:id", controllers.GetCustomerById)
+	r.GET("/items", controllers.GetItems)
+	r.GET("/items/name/:name", controllers.GetItemByName)
+	//r.GET("/sales", getSales)
 
 	/// POST METHODS
 	r.POST("/newCustomer", controllers.NewCustomer)
